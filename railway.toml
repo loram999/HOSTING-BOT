@@ -1,0 +1,31 @@
+# Railway Configuration File
+
+# Build settings
+[build]
+builder = "NIXPACKS"
+buildCommand = "pip install -r requirements.txt"
+
+# Start command
+[deploy]
+startCommand = "python main.py"
+healthcheckPath = "/health"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+# Volume for persistent storage
+[volumes]
+"/app/kelvin_data" = "kelvin_data"
+"/app/kelvin_uploads" = "kelvin_uploads"
+"/app/backups" = "backups"
+"/app/logs" = "logs"
+
+# Cron jobs for scheduled tasks
+[crons]
+cleanup = "0 */6 * * * python cleanup.py"
+backup = "0 0 * * * python backup.py"
+
+# Resource limits
+[resources]
+cpu = 1000  # 1 CPU
+memory = 512  # 512 MB
